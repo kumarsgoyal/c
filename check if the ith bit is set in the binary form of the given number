@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int check (int N, int i)
+    {
+        if( N & (1 << i) )
+            return 1;
+        else
+            return 0;
+    }
+
+int main() {
+	int num = 0;
+	int i = 0;
+	printf("Enter a number");
+	scanf("%d", &num);
+	printf("Enter bit want to check");
+	scanf("%d", &i);
+	int flag = check(num, i);
+    if(flag == 1)
+    {
+        printf("ith bit is set in the binary form of the given number");
+    }
+    else
+    {
+        printf("ith bit not set in the binary form of the given number");
+    }
+	return 0;
+}
