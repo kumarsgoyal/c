@@ -1,0 +1,140 @@
+/*
+  Given an expression string exp , write a program to examine whether the pairs and
+  the orders of “{“,”}”,”(“,”)”,”[“,”]” are correct in exp.
+  
+  Input: exp = “[()]{}{[()()]()}”
+  Output: Balanced
+
+  Input: exp = “[(])”
+  Output: Not Balanced
+  
+  
+  Algorithm:
+  Declare a character stack.
+  Now traverse the expression string exp.
+  If the current character is a starting bracket (‘(‘ or ‘{‘ or ‘[‘) then push it to stack.
+  If the current character is a closing bracket (‘)’ or ‘}’ or ‘]’) then pop from stack and if 
+  the popped character is the matching starting bracket then fine else parenthesis are not balanced.
+  After complete traversal, if there is some starting bracket left in stack then “not balanced”
+
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+
+typedef struct Stack stack;
+
+struct Stack
+{
+	char data;
+	stack *next;
+};
+
+
+//push function push element in stack and return 0 or 1
+//if return 1 that mean stack is full
+//else return 0 that mean element is inserted successfully
+int push(char data, stack **head)
+{
+	stack *newNode = (stack *)malloc(sizeof(stack));
+	if(newNode == NULL)
+	{
+		printf("stack is full"); //malloc return Null if ram is full
+		return 1;
+	}
+	else
+	{
+		newNode->data = data;
+		newNode->next = *head;
+		*head = newNode;
+		return 0;
+	}
+}
+
+//pop function pop out element from stack and return char
+//if it return '0' that mean stack is already empty
+//else it return top element from stack
+char pop(stack **head)
+{
+	if (*head == NULL) 
+	{
+        printf("stack is empty\n");
+        return '0';
+	}
+    else
+    {
+    	char res;
+    	stack *temp = *head;
+		*head = (*head)->next;
+		res = temp->data;
+		free(temp);
+		return res;
+	}
+}
+
+
+//main
+int main()
+{
+	int size = 0;
+	char res;
+	int flag = 0;
+
+	printf("Enter the size of parentheses string \n");
+	scanf("%d", &size);
+
+	//dynamic char array
+	char *arr = (char *)malloc((size ) * sizeof(char)); 
+
+	
+	if(arr == NULL)
+	{
+		printf("Memory not available.");
+		return 0;
+	}
+	
+	stack *head = NULL; //pointer pointing to stack
+
+	printf("Enter the brackets\n");
+	scanf("%s", arr);
+
+	for(int i = 0; i < size; i++)
+	{
+		if(arr[i] == '(' || arr[i] == '[' || arr[i] == '{')
+		{
+			flag = push(arr[i], &head);
+		}
+		else
+		{
+			res = pop(&head);
+			switch(res)
+			{
+				case '0' : flag = 1;
+					break;
+				case '(' : flag = (arr[i] == ')') ? 0 : 1;
+					break;
+				case '{' : flag = (arr[i] == '}') ? 0 : 1;
+					break;
+				case '[' : flag = (arr[i] == ']') ? 0 : 1;
+					break;
+			}
+		}
+		if(flag == 1)
+		{
+		    break;
+		}
+	}
+
+	if(head == NULL && flag == 0)
+	{
+		printf("balanced");
+	}
+	else
+	{
+		printf("unbalanced");
+	}
+	free(arr);
+	return 0;
+}
