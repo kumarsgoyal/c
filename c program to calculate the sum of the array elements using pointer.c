@@ -3,6 +3,8 @@
     C program to read N integers and store them in an array A.
     Find the sum of all these elements using pointer.
 */
+/// 
+
 
 #include <stdio.h>
 #include <malloc.h>
